@@ -1,0 +1,87 @@
+@startuml
+
+entity Customer {
+    * id : PK
+    --
+    name : string
+    address : string
+    email : string
+    phone : string
+    gender : string
+    role: string
+}
+
+entity Agency {
+    * id : PK
+    --
+    name : string
+    address : string
+    email : string
+    phone : string
+    gender : string
+    role: string
+}
+
+entity Admin {
+    * id : PK
+    --
+    name : string
+    role: string
+}
+
+entity Cart {
+    * id : PK
+    --
+    CustomerID : FK
+}
+
+entity Product {
+    * id : PK
+    --
+    name : string
+    price : float
+}
+
+entity Transaction {
+    * id : PK
+    --
+    date : Date
+    customerId : FK
+    agencyId : FK
+    totalAmount : float
+}
+
+entity Billing {
+    * id : PK
+    --
+    transactionId : FK
+    billingDate : Date
+    amount : float
+}
+
+entity Cart_Product {
+    * id : PK
+    --
+    cartId : FK
+    productId : FK
+    quantity : int
+}
+
+' Relationships
+
+Customer ||--o{ Cart : owns
+Customer ||--o{ Transaction : initiates
+Customer ||--o{ Billing : linked_to
+
+Agency ||--o{ Product : sells
+Agency ||--o{ Transaction : involved_in
+Agency ||--o{ Billing : linked_to
+
+Admin ||--o{ Agency : manages
+
+Cart ||--o{ Cart_Product : contains
+Product ||--o{ Cart_Product : added_to
+
+Transaction ||--|| Billing : generates
+
+@enduml
